@@ -1,4 +1,5 @@
 const Notification = require('../models/Notification');
+const DeviceToken = require('../models/DeviceToken');
 
 // @desc    Get user notifications
 // @route   GET /api/notifications
@@ -264,6 +265,91 @@ exports.createNotification = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error creating notification',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Save/Update device token for push notifications
+// @route   POST /api/notifications/device-token
+// @access  Private
+exports.saveDeviceToken = async (req, res) => {
+  try {
+    const { token, platform = 'ios' } = req.body;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: 'Device token is required'
+      });
+    }
+
+    // Check if token already exists for another user and deactivate it
+    await DeviceToken.updateMany(
+      { token, userId: { $ne: req.user._id } },
+      { isActive: false }
+    );
+
+    // Create or update device token for this user
+    const deviceToken = await DeviceToken.findOneAndUpdate(
+      { userId: req.user._id, platform },
+      {
+        token,
+        platform,
+        isActive: true,
+        lastUsed: Date.now()
+      },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Device token saved successfully',
+      data: {
+        deviceToken
+      }
+    });
+
+  } catch (error) {
+    console.error('Save Device Token Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error saving device token',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Remove device token (on logout)
+// @route   DELETE /api/notifications/device-token
+// @access  Private
+exports.removeDeviceToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (token) {
+      await DeviceToken.findOneAndUpdate(
+        { token, userId: req.user._id },
+        { isActive: false }
+      );
+    } else {
+      // Deactivate all tokens for this user
+      await DeviceToken.updateMany(
+        { userId: req.user._id },
+        { isActive: false }
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Device token removed successfully'
+    });
+
+  } catch (error) {
+    console.error('Remove Device Token Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error removing device token',
       error: error.message
     });
   }

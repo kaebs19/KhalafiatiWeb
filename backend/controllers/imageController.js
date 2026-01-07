@@ -37,9 +37,32 @@ exports.getAllImages = async (req, res) => {
       ];
     }
 
-    // Filter by category
+    // Filter by category (support both ObjectId and slug)
     if (category) {
-      query.category = category;
+      // Check if it's an ObjectId
+      if (category.match(/^[0-9a-fA-F]{24}$/)) {
+        query.category = category;
+      } else {
+        // It's a slug, find the category first
+        const categoryDoc = await Category.findOne({ slug: category });
+        if (categoryDoc) {
+          query.category = categoryDoc._id;
+        } else {
+          // Category not found, return empty results
+          return res.status(200).json({
+            success: true,
+            data: {
+              images: [],
+              pagination: {
+                current: pageNum,
+                pages: 0,
+                total: 0,
+                limit: limitNum
+              }
+            }
+          });
+        }
+      }
     }
 
     // Filter by uploader

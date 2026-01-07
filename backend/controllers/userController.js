@@ -112,12 +112,12 @@ exports.getAllUsers = async (req, res) => {
 
 // @desc    Get user by ID
 // @route   GET /api/users/:id
-// @access  Private/Admin
+// @access  Public (but excludes sensitive data)
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id).select('-password');
+    const user = await User.findById(id).select('-password -email');
 
     if (!user) {
       return res.status(404).json({
@@ -139,7 +139,16 @@ exports.getUserById = async (req, res) => {
       success: true,
       data: {
         user: {
-          ...user.toObject(),
+          _id: user._id,
+          username: user.username,
+          fullName: user.fullName,
+          bio: user.bio,
+          avatar: user.avatar,
+          avatarUrl: user.avatarUrl,
+          coverImage: user.coverImage,
+          coverImageUrl: user.coverImageUrl,
+          socialMedia: user.socialMedia,
+          createdAt: user.createdAt,
           imageCount
         },
         recentImages
