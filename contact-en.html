@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Khalafiati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .content {
+            padding: 50px 40px;
+        }
+        
+        .intro-text {
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        
+        .contact-methods {
+            display: grid;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .contact-icon {
+            font-size: 3em;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-info h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-info a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+        
+        .help-section {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        
+        .help-section h3 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        
+        .help-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .help-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .help-section li:before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+        }
+        
+        .app-download {
+            text-align: center;
+            margin: 40px 0 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        .app-download h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            font-size: 2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: scale(1.2);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 30px 25px;
+            }
+            
+            .contact-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📞 Contact Us</h1>
+            <p>We're here to help! Reach out to us anytime</p>
+        </div>
+        
+        <div class="content">
+            <div class="intro-text">
+                <p>Whether you have a question, suggestion, or need assistance,<br>our team is ready to respond to you as soon as possible.</p>
+            </div>
+            
+            <div class="contact-methods">
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-info">
+                        <h3>Email</h3>
+                        <p>For general inquiries and technical support</p>
+                        <a href="mailto:kaebs19@gmail.com">kaebs19@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">🐦</div>
+                    <div class="contact-info">
+                        <h3>Twitter</h3>
+                        <p>Follow us for the latest updates</p>
+                        <a href="https://x.com/B_c_Arab" target="_blank">@B_c_Arab</a>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-info">
+                        <h3>Instagram</h3>
+                        <p>Share your creations and suggestions</p>
+                        <a href="https://www.instagram.com/hala.chat/" target="_blank">@hala.chat</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="help-section">
+                <h3>🆘 How Can We Help You?</h3>
+                <ul>
+                    <li>Report inappropriate or violating content</li>
+                    <li>Technical issues or bugs in the app</li>
+                    <li>Questions about account and privacy</li>
+                    <li>Suggestions to improve the app</li>
+                    <li>Questions about usage and features</li>
+                    <li>Business inquiries and partnerships</li>
+                    <li>Data deletion and account removal requests</li>
+                </ul>
+            </div>
+            
+            <div class="help-section" style="background: #fff3cd; border-left-color: #ffc107;">
+                <h3>⏰ Response Times</h3>
+                <p style="margin: 0;">We try to respond to all messages within 24-48 hours on business days. In case of emergencies or violating content, we work to respond as quickly as possible.</p>
+            </div>
+            
+            <div class="app-download">
+                <h3>📲 Haven't Downloaded the App Yet?</h3>
+                <p>Try Khalafiati now and enjoy thousands of amazing wallpapers!</p>
+                <a href="https://apps.apple.com/us/app/id1514966063" target="_blank" class="download-button">
+                    🍎 Download from App Store
+                </a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://x.com/B_c_Arab" target="_blank" class="social-link" title="Twitter">🐦</a>
+                <a href="https://www.instagram.com/hala.chat/" target="_blank" class="social-link" title="Instagram">📱</a>
+                <a href="mailto:kaebs19@gmail.com" class="social-link" title="Email">📧</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Khalafiati App</strong></p>
+            <p>We always strive to provide the best experience for our users</p>
+            <p style="margin-top: 15px;">
+                <a href="privacy-policy-en.html">Privacy Policy</a> | 
+                <a href="terms-en.html">Terms of Use</a>
+            </p>
+            <p style="margin-top: 10px; color: #999;">All Rights Reserved © 2025</p>
+        </div>
+    </div>
+</body>
+</html>
