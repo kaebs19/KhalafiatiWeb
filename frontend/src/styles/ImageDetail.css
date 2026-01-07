@@ -1,0 +1,260 @@
+/* Image Detail Page */
+.image-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.image-display {
+  background: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.image-display img {
+  max-width: 100%;
+  max-height: 800px;
+  object-fit: contain;
+}
+
+.image-info-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Uploader Section */
+.uploader-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.uploader-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.uploader-card:hover {
+  opacity: 0.8;
+}
+
+.uploader-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: hidden;
+}
+
+.uploader-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploader-avatar svg {
+  font-size: 1.5rem;
+}
+
+.uploader-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.uploader-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.uploader-role {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: capitalize;
+}
+
+/* Image Details */
+.image-details-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.image-detail-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem 0;
+}
+
+.image-detail-description {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Stats Section */
+.image-stats-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.stat-item svg {
+  font-size: 1.125rem;
+  color: #94a3b8;
+}
+
+.stat-item svg.liked {
+  color: #ef4444;
+  fill: #ef4444;
+}
+
+/* Like Button */
+.like-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.like-button:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.like-button svg {
+  font-size: 1.125rem;
+}
+
+.like-button.liked {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+}
+
+.like-button.liked svg {
+  fill: white;
+}
+
+/* Meta Section */
+.image-meta-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.meta-item svg {
+  font-size: 1.125rem;
+  color: #94a3b8;
+}
+
+/* Tags Section */
+.tags-section {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.tags-section h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  background: #f1f5f9;
+  color: #4f46e5;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.tag:hover {
+  background: #e0e7ff;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .image-detail-container {
+    grid-template-columns: 1fr;
+  }
+
+  .image-display {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .image-detail-container {
+    padding: 1rem;
+  }
+
+  .image-display {
+    min-height: 300px;
+  }
+
+  .image-detail-title {
+    font-size: 1.25rem;
+  }
+}

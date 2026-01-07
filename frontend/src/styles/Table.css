@@ -1,0 +1,161 @@
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.2s;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.table tbody tr.clickable {
+  cursor: pointer;
+}
+
+.table td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  color: #1e293b;
+}
+
+.table-actions {
+  white-space: nowrap;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.action-button.view {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.action-button.view:hover {
+  background: #bfdbfe;
+}
+
+.action-button.edit {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.action-button.edit:hover {
+  background: #bfdbfe;
+}
+
+.action-button.delete {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.action-button.delete:hover {
+  background: #fecaca;
+}
+
+.action-button.ban {
+  background: #fed7aa;
+  color: #ea580c;
+}
+
+.action-button.ban:hover {
+  background: #fdba74;
+}
+
+.action-button.unban {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.action-button.unban:hover {
+  background: #a7f3d0;
+}
+
+.table-loading,
+.table-empty {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar-small {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.category-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category-icon {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .action-button {
+    width: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+}

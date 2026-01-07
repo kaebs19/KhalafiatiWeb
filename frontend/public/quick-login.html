@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Login - Khalafiati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status.info { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+        .status.success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .status.error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-clear { background: #ef4444; color: white; }
+        .btn-clear:hover { background: #dc2626; }
+        .btn-admin { background: #dc3545; color: white; }
+        .btn-admin:hover { background: #bb2d3b; }
+        .btn-user { background: #28a745; color: white; }
+        .btn-user:hover { background: #218838; }
+        .btn-home { background: #6366f1; color: white; }
+        .btn-home:hover { background: #4f46e5; }
+
+        .divider { height: 1px; background: #e2e8f0; margin: 25px 0; }
+
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 { color: #1e293b; font-size: 16px; margin-bottom: 10px; }
+        .info-box ul { list-style: none; color: #64748b; font-size: 14px; line-height: 1.8; }
+        .info-box ul li:before { content: "✓ "; color: #10b981; font-weight: bold; margin-right: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Quick Login & Clear Data</h1>
+        <p class="subtitle">Khalafiati - Fast Testing Tools</p>
+
+        <div id="status" class="status"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-clear" onclick="clearAllData()">
+                <span>🗑️</span> Clear All Data (localStorage + Cache)
+            </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-admin" onclick="quickLogin('admin')">
+                <span>👑</span> Quick Login: Admin
+            </button>
+
+            <button class="btn btn-user" onclick="quickLogin('user')">
+                <span>👤</span> Quick Login: User
+            </button>
+
+            <button class="btn btn-home" onclick="goHome()">
+                <span>🏠</span> Go to Main App
+            </button>
+        </div>
+
+        <div class="info-box">
+            <h3>📋 What this page does:</h3>
+            <ul>
+                <li>Clears all localStorage data</li>
+                <li>Removes authentication tokens</li>
+                <li>Clears browser cache</li>
+                <li>Provides quick login buttons</li>
+                <li>Forces hard refresh</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5001';
+
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            statusEl.style.display = 'block';
+            if (type === 'success') setTimeout(() => statusEl.style.display = 'none', 3000);
+        }
+
+        function clearAllData() {
+            showStatus('🗑️ Clearing all data...', 'info');
+            localStorage.clear();
+            sessionStorage.clear();
+            if ('caches' in window) {
+                caches.keys().then(names => names.forEach(name => caches.delete(name)));
+            }
+            showStatus('✅ All data cleared! You can now login fresh.', 'success');
+            console.log('✅ Cleared localStorage, sessionStorage, and cache');
+        }
+
+        async function quickLogin(type) {
+            const credentials = {
+                admin: { email: 'admin@khalafiati.com', password: 'admin123', label: 'Admin' },
+                user: { email: 'testuser99@example.com', password: 'test123', label: 'User' }
+            };
+
+            const cred = credentials[type];
+            showStatus(`🔐 Logging in as ${cred.label}...`, 'info');
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: cred.email, password: cred.password })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.data.token) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+
+                    showStatus(`✅ Logged in as ${cred.label}! Redirecting...`, 'success');
+                    console.log('✅ Login successful:', data.data.user);
+
+                    setTimeout(() => window.location.href = '/dashboard', 1000);
+                } else {
+                    throw new Error(data.message || 'Login failed');
+                }
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                showStatus(`❌ Login failed: ${error.message}`, 'error');
+            }
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        window.addEventListener('load', () => {
+            showStatus('👋 Welcome! Use buttons below to clear data or login.', 'info');
+        });
+    </script>
+</body>
+</html>

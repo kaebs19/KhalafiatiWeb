@@ -1,0 +1,9 @@
+# Routes Summary Created
+All route files have been successfully created:
+
+total 20K
+-rw-r--r-- 1 Admin 197121  606 Dec 28 22:01 authRoutes.js
+-rw-r--r-- 1 Admin 197121 1.2K Dec 28 22:01 categoryRoutes.js
+-rw-r--r-- 1 Admin 197121  891 Dec 28 22:01 dashboardRoutes.js
+-rw-r--r-- 1 Admin 197121 1.2K Dec 28 22:01 imageRoutes.js
+-rw-r--r-- 1 Admin 197121  685 Dec 28 22:01 userRoutes.js

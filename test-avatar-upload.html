@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار رفع الصورة الشخصية</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .avatar-preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .avatar-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 50%;
+            border: 3px solid #4CAF50;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .endpoint-option {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .endpoint-option:hover {
+            border-color: #4CAF50;
+        }
+        .endpoint-option.selected {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        .endpoint-option input[type="radio"] {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🖼️ اختبار رفع الصورة الشخصية</h2>
+
+        <div class="info">
+            <strong>📌 ملاحظة:</strong> قم بتسجيل الدخول أولاً للحصول على Token
+        </div>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label>اختر الـ Endpoint:</label>
+
+                <div class="endpoint-option selected" onclick="selectEndpoint('put-profile-avatar')">
+                    <input type="radio" name="endpoint" value="put-profile-avatar" id="put-profile-avatar" checked>
+                    <label for="put-profile-avatar" style="display: inline; margin: 0;">
+                        <strong>PUT /api/auth/profile/avatar</strong>
+                        <br><small>مخصص لـ iOS - مع multipart form-data</small>
+                    </label>
+                </div>
+
+                <div class="endpoint-option" onclick="selectEndpoint('post-avatar')">
+                    <input type="radio" name="endpoint" value="post-avatar" id="post-avatar">
+                    <label for="post-avatar" style="display: inline; margin: 0;">
+                        <strong>POST /api/auth/avatar</strong>
+                        <br><small>طريقة بديلة</small>
+                    </label>
+                </div>
+
+                <div class="endpoint-option" onclick="selectEndpoint('put-profile')">
+                    <input type="radio" name="endpoint" value="put-profile" id="put-profile">
+                    <label for="put-profile" style="display: inline; margin: 0;">
+                        <strong>PUT /api/auth/profile</strong>
+                        <br><small>تحديث شامل للملف الشخصي</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="token">🔑 Token:</label>
+                <input type="text" id="token" placeholder="أدخل الـ JWT Token هنا" required>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar">🖼️ اختر صورة:</label>
+                <input type="file" id="avatar" accept="image/*" required>
+            </div>
+
+            <button type="submit" id="submitBtn">رفع الصورة</button>
+        </form>
+
+        <div id="result" class="result"></div>
+        <div id="avatarPreview" class="avatar-preview"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+
+        function selectEndpoint(endpointId) {
+            // Remove selected class from all options
+            document.querySelectorAll('.endpoint-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+
+            // Check the radio button
+            document.getElementById(endpointId).checked = true;
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const token = document.getElementById('token').value.trim();
+            const avatarFile = document.getElementById('avatar').files[0];
+            const endpoint = document.querySelector('input[name="endpoint"]:checked').value;
+            const resultDiv = document.getElementById('result');
+            const submitBtn = document.getElementById('submitBtn');
+            const previewDiv = document.getElementById('avatarPreview');
+
+            if (!token) {
+                showResult('الرجاء إدخال Token', 'error');
+                return;
+            }
+
+            if (!avatarFile) {
+                showResult('الرجاء اختيار صورة', 'error');
+                return;
+            }
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الرفع...';
+            resultDiv.style.display = 'none';
+            previewDiv.innerHTML = '';
+
+            try {
+                const formData = new FormData();
+                formData.append('avatar', avatarFile);
+
+                // Select the appropriate endpoint
+                let url;
+                let method;
+
+                switch(endpoint) {
+                    case 'put-profile-avatar':
+                        url = `${API_URL}/api/auth/profile/avatar`;
+                        method = 'PUT';
+                        break;
+                    case 'post-avatar':
+                        url = `${API_URL}/api/auth/avatar`;
+                        method = 'POST';
+                        break;
+                    case 'put-profile':
+                        url = `${API_URL}/api/auth/profile`;
+                        method = 'PUT';
+                        break;
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showResult(`✅ ${data.message}`, 'success');
+
+                    // Show avatar preview
+                    if (data.data && data.data.user) {
+                        const user = data.data.user;
+                        let avatarUrl = '';
+
+                        if (user.avatarUrl) {
+                            avatarUrl = `${API_URL}${user.avatarUrl}`;
+                        } else if (user.avatar) {
+                            avatarUrl = `${API_URL}/uploads/avatars/${user.avatar}`;
+                        }
+
+                        if (avatarUrl) {
+                            previewDiv.innerHTML = `
+                                <h3>الصورة الشخصية الجديدة:</h3>
+                                <img src="${avatarUrl}" alt="Avatar">
+                                <p><strong>اسم المستخدم:</strong> ${user.username}</p>
+                                <p><strong>الاسم الكامل:</strong> ${user.fullName}</p>
+                            `;
+                        }
+                    }
+                } else {
+                    showResult(`❌ خطأ: ${data.message || 'فشل رفع الصورة'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showResult(`❌ خطأ في الاتصال: ${error.message}`, 'error');
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'رفع الصورة';
+            }
+        });
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+        }
+
+        // Auto-load token from localStorage if available
+        window.addEventListener('load', () => {
+            const savedToken = localStorage.getItem('authToken');
+            if (savedToken) {
+                document.getElementById('token').value = savedToken;
+            }
+        });
+
+        // Save token to localStorage when entered
+        document.getElementById('token').addEventListener('change', (e) => {
+            const token = e.target.value.trim();
+            if (token) {
+                localStorage.setItem('authToken', token);
+            }
+        });
+    </script>
+</body>
+</html>

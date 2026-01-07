@@ -1,0 +1,138 @@
+.admin-settings-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+}
+
+.admin-settings-card {
+  border-radius: 12px;
+  border: none;
+}
+
+.admin-settings-card .card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 20px 30px;
+}
+
+.admin-settings-card .card-header h3 {
+  font-weight: 600;
+}
+
+.admin-settings-card .card-body {
+  padding: 30px;
+}
+
+.setting-form {
+  padding: 20px 0;
+}
+
+.setting-form label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.setting-form .form-control,
+.setting-form .form-select {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+}
+
+.setting-form .form-control:focus,
+.setting-form .form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.setting-form textarea.form-control {
+  resize: vertical;
+  min-height: 200px;
+}
+
+.nav-tabs {
+  border-bottom: 2px solid #e9ecef;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: all 0.3s;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #667eea;
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+  color: #667eea;
+  background: none;
+  border-bottom: 3px solid #667eea;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 10px 25px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #6c757d;
+  opacity: 0.6;
+}
+
+.btn-outline-primary {
+  border: 2px solid #667eea;
+  color: #667eea;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.btn-outline-primary:hover {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.form-check-input:checked {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-settings-container {
+    padding: 20px 10px;
+  }
+
+  .admin-settings-card .card-header {
+    padding: 15px 20px;
+  }
+
+  .admin-settings-card .card-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .admin-settings-card .card-body {
+    padding: 20px 15px;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,747 @@
+{
+  "info": {
+    "name": "Khalafiati API",
+    "_postman_id": "khalafiati-api-v2.3.0",
+    "description": "Complete API collection for Khalafiati Platform - Image Sharing System\n\n**Version:** 2.3.0\n**Base URL:** http://localhost:5001/api\n**Updated:** 2025-12-30\n\n**How to use:**\n1. Import this file to Postman\n2. Run 'Register' or 'Login' request\n3. Token will be saved automatically\n4. All other requests will use it",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5001/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "imageId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "    pm.collectionVariables.set('userId', jsonData.data.user._id);",
+                  "    console.log('Token saved:', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser_{{$randomInt}}\",\n  \"email\": \"testuser{{$randomInt}}@example.com\",\n  \"password\": \"Test123456\",\n  \"fullName\": \"Test User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "تسجيل مستخدم جديد والحصول على توكن تلقائياً"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "    pm.collectionVariables.set('userId', jsonData.data.user._id);",
+                  "    console.log('Token saved:', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser99@example.com\",\n  \"password\": \"test123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "تسجيل الدخول للحصول على توكن"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "الحصول على بيانات المستخدم الحالي (يحتاج token)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints للمصادقة والتسجيل"
+    },
+    {
+      "name": "2. Images - Public",
+      "item": [
+        {
+          "name": "Get All Images",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images?page=1&limit=12&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["images"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "createdAt, views, downloads, likesCount"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "asc or desc"
+                },
+                {
+                  "key": "category",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Filter by category ID"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Search in title and description"
+                }
+              ]
+            },
+            "description": "الحصول على كل الصور مع فلترة وترتيب (لا يحتاج token)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Most Liked Images",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/most-liked?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "most-liked"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "الصور الأكثر إعجاباً مرتبة حسب likesCount"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Latest Images",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/latest?page=1&limit=12",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "latest"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": "أحدث الصور المرفوعة"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Featured Images",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/featured?limit=12",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "featured"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": "الصور المميزة"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Images",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/popular?limit=10&sortBy=views",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "popular"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "views",
+                  "description": "views or downloads"
+                }
+              ]
+            },
+            "description": "الصور الأكثر مشاهدة أو تحميلاً"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Image by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('imageId', jsonData.data.image._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/{{imageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "{{imageId}}"]
+            },
+            "description": "الحصول على تفاصيل صورة محددة بالـ ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Search by Tags",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/search/tags?tags=sunset,nature,sky",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "search", "tags"],
+              "query": [
+                {
+                  "key": "tags",
+                  "value": "sunset,nature,sky",
+                  "description": "Comma-separated tags"
+                }
+              ]
+            },
+            "description": "البحث عن صور بواسطة التاغات"
+          },
+          "response": []
+        }
+      ],
+      "description": "Public Image Endpoints - لا تحتاج token"
+    },
+    {
+      "name": "3. Images - Protected",
+      "item": [
+        {
+          "name": "Upload Image",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('imageId', jsonData.data.image._id);",
+                  "    console.log('Image uploaded, ID:', jsonData.data.image._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "اختر صورة من جهازك (Required)"
+                },
+                {
+                  "key": "title",
+                  "value": "Beautiful Sunset",
+                  "type": "text",
+                  "description": "عنوان الصورة (Required)"
+                },
+                {
+                  "key": "description",
+                  "value": "Amazing sunset at the beach",
+                  "type": "text",
+                  "description": "وصف الصورة (Optional)"
+                },
+                {
+                  "key": "category",
+                  "value": "{{categoryId}}",
+                  "type": "text",
+                  "description": "ObjectId للقسم (Required)"
+                },
+                {
+                  "key": "tags",
+                  "value": "sunset,beach,nature",
+                  "type": "text",
+                  "description": "تاغات مفصولة بفاصلة (Optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/images",
+              "host": ["{{baseUrl}}"],
+              "path": ["images"]
+            },
+            "description": "رفع صورة جديدة (يحتاج token)\n\nملاحظة: اختر ملف صورة من جهازك"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Image",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Title\",\n  \"description\": \"Updated description\",\n  \"tags\": [\"sunset\", \"beach\", \"summer\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/images/{{imageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "{{imageId}}"]
+            },
+            "description": "تحديث بيانات صورة (صاحب الصورة فقط)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Image",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/images/{{imageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["images", "{{imageId}}"]
+            },
+            "description": "حذف صورة (صاحب الصورة أو Admin فقط)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Image endpoints تحتاج token"
+    },
+    {
+      "name": "4. Categories - Public",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data.categories.length > 0) {",
+                  "        pm.collectionVariables.set('categoryId', jsonData.data.categories[0]._id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories?page=1&limit=20&isActive=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "description": "true or false"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "الحصول على كل الأقسام"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "active"]
+            },
+            "description": "الأقسام النشطة فقط (مبسطة)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "تفاصيل قسم معين + آخر 8 صور"
+          },
+          "response": []
+        }
+      ],
+      "description": "Category endpoints - Public"
+    },
+    {
+      "name": "5. Likes",
+      "item": [
+        {
+          "name": "Toggle Like",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/likes/images/{{imageId}}/like",
+              "host": ["{{baseUrl}}"],
+              "path": ["likes", "images", "{{imageId}}", "like"]
+            },
+            "description": "إعجاب أو إلغاء إعجاب (toggle)\n\nيحتاج token"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Like Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/likes/images/{{imageId}}/like/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["likes", "images", "{{imageId}}", "like", "status"]
+            },
+            "description": "التحقق من حالة الإعجاب للمستخدم الحالي"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Likes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/likes/my-likes?page=1&limit=12",
+              "host": ["{{baseUrl}}"],
+              "path": ["likes", "my-likes"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": "الصور التي أعجبت بها"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Image Likes",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/likes/images/{{imageId}}/likes?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["likes", "images", "{{imageId}}", "likes"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "قائمة المستخدمين الذين أعجبوا بصورة معينة"
+          },
+          "response": []
+        }
+      ],
+      "description": "Likes endpoints"
+    },
+    {
+      "name": "6. Reports",
+      "item": [
+        {
+          "name": "Create Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageId}}\",\n  \"reason\": \"spam\",\n  \"description\": \"This image contains spam content\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports"]
+            },
+            "description": "إنشاء بلاغ عن صورة\n\nreason: spam, inappropriate, copyright, other"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Reports",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/my-reports?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "my-reports"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "البلاغات التي قمت بإنشائها"
+          },
+          "response": []
+        }
+      ],
+      "description": "Reports endpoints"
+    },
+    {
+      "name": "7. Users",
+      "item": [
+        {
+          "name": "Get User by ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            },
+            "description": "الحصول على بيانات مستخدم معين بالـ ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Users endpoints"
+    }
+  ]
+}

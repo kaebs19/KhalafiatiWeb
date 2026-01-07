@@ -1,0 +1,134 @@
+.like-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 2px solid #e5e7eb;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  position: relative;
+  overflow: hidden;
+}
+
+.like-button:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.like-button.liked {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-color: #ef4444;
+  color: white;
+}
+
+.like-button.liked:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+}
+
+.like-button:active {
+  transform: translateY(0);
+}
+
+.like-button.loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.like-button.animate .like-icon {
+  animation: heartBeat 0.3s ease;
+}
+
+.like-icon {
+  width: 18px;
+  height: 18px;
+  transition: all 0.3s ease;
+}
+
+.like-icon.filled {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.like-count {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Heart beat animation */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Ripple effect */
+.like-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.like-button:active::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* Compact version for small spaces */
+.like-button.compact {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.like-button.compact .like-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.like-button.compact .like-count {
+  font-size: 12px;
+}
+
+/* Large version */
+.like-button.large {
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+.like-button.large .like-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.like-button.large .like-count {
+  font-size: 16px;
+}
